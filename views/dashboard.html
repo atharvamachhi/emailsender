@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+    
+  </head>
+  <body>
+    <form method="POST" action="/logout">
+        <button type="submit" class="button-dashboard">Logout</button>
+    </form>
+
+    <div class="counter-box">
+        <strong>Emails sent in the last 24 hours:</strong>
+        <span id="emailCount">0</span> / <span id="emailLimit">5</span>
+        <span id="remainingWrap"></span>
+        <div id="resetIn"></div>
+    </div>
+
+    <h2>Send Email</h2>
+    <form method="POST" action="/send-email" enctype="multipart/form-data" class="form-dashboard">
+        <label class="label-dashboard">To:</label>
+        <input type="email" name="to" class="input-dashboard" required />
+
+        <label class="label-dashboard">CC:</label>
+        <input type="email" name="cc" class="input-dashboard" />
+
+        <label class="label-dashboard">Subject:</label>
+        <input type="text" name="subject" class="input-dashboard" required />
+
+        <label class="label-dashboard">Body</label>
+        <textarea name="body" rows="6" class="textarea-dashboard" required></textarea>
+
+        <label class="label-dashboard">Attachment:</label>
+        <input type="file" name="attachment" class="input-dashboard" />
+
+        <button type="submit" class="button-dashboard">Send</button>
+    </form>
+
+    <script>
+        function refreshCounter() {
+            fetch("/email-count")
+            .then((res) => res.json())
+            .then((data) => {
+                document.getElementById("emailCount").innerText = data.count;
+                document.getElementById("emailLimit").innerText = data.limit;
+                document.getElementById(
+                "remainingWrap"
+                ).innerText = ` (Remaining: ${data.remaining})`;
+                document.getElementById("resetIn").innerText =
+                data.count >= data.limit
+                    ? `Resets in about ${data.resetInHuman}`
+                    : "";
+            })
+            .catch(console.error);
+        }
+
+        refreshCounter();
+    </script>
+  </body>
+</html>

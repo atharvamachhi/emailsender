@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="/login" class="form-login">
+        <h2>Login</h2>
+
+        <label>Username</label>
+        <input name="username" class="input-login" required />
+        
+        <label>Password</label>
+        <input name="password" type="password" class="input-login" required />
+
+        <div id="error" class="error">Invalid username or password.</div>
+
+        <button type="submit" class="button-login">Login</button>
+    </form>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === '1') {
+            document.getElementById('error').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
